@@ -21,13 +21,20 @@ const ListEmployeeComponent = () => {
     }
 
     const deleteEmployee = (employeeId) => {
-       EmployeeService.deleteEmployee(employeeId).then((response) =>{
-        getAllEmployees();
 
+      const result = window.confirm("정말 삭제하시겠습니까?");
+      if (result) {
+
+        // 여기에 실제 삭제 로직을 넣을 수 있습니다.
+        EmployeeService.deleteEmployee(employeeId).then((response) =>{
+        getAllEmployees();
+        alert("삭제되었습니다.");
        }).catch(error =>{
            console.log(error);
        })
-        
+      } else {
+        alert("삭제가 취소되었습니다.");
+      }
     }
 
     return (

@@ -16,8 +16,7 @@ import axios from 'axios'
 
 const EMPLOYEE_BASE_REST_API_URL = 'http://localhost:9999/api/employee';
 
-
-
+// 클래스형 컴포넌트 , 
 class EmployeeService{
 
     getAllEmployees(){

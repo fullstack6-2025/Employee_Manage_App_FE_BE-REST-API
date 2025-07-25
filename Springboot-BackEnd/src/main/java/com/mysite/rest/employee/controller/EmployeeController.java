@@ -22,10 +22,16 @@ import com.mysite.rest.employee.repository.EmployeeRepository;
 import com.mysite.rest.employee.service.EmployeeService;
 import com.mysite.rest.exception.ResourceNotFoundException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+
+// swagger 라이브러리의 어노테이션 
+@Tag(name="사원 컨트롤러" , description="사원 API")
+
 @CrossOrigin("*")		//CORS 셋팅 
-@RestController			// REST API 통신 
+@RestController			// REST API 통신 (@Controller + @ResponseBody)
 @RequestMapping ("/api/employee")		//@RequestMapping 하위 요청에 상속 됨. 
 @RequiredArgsConstructor
 public class EmployeeController {
@@ -61,6 +67,8 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
     private final EmployeeService employeeService; 
 
+    //swagger :  @Operation
+    @Operation(summary="getEmployeeAll()", description="사원의 전체 목록 출력")
     @GetMapping
     public List<Employee> getAllEmployees(){ 
     	System.out.println("getAllEmployees : 호출됨 ");
@@ -70,12 +78,17 @@ public class EmployeeController {
     // build create employee REST API
     @PostMapping
    public Employee createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    	System.out.println(employeeDTO.getLastName());
+    	System.out.println(employeeDTO.getFirstName());
+    	System.out.println(employeeDTO.getEmailId());
+    	
         return employeeService.createEmployee(employeeDTO);
     }
 
     // build get employee by id REST API
     @GetMapping("{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable  long id){
+    	System.out.println("id : " + id);
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id:" + id));
         return ResponseEntity.ok(employee);
@@ -97,6 +110,8 @@ public class EmployeeController {
     }
 
     // build delete employee REST API
+    
+    @Operation(summary="deleteEmployee()", description="사원 삭제")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable long id){
 

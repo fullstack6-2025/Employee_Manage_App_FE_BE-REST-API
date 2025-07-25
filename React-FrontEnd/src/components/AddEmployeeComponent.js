@@ -2,14 +2,17 @@ import React, {useState, useEffect} from 'react'
 import {Link, useNavigate, useParams } from 'react-router-dom';
 import EmployeeService from '../services/EmployeeService'
 
+// 사원 등록, 사원 수정 (id) 
 const AddEmployeeComponent = () => {
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [emailId, setEmailId] = useState('')
+
     const navigate = useNavigate();
     const {id} = useParams();
 
+    // 사원 등록, 수정 을 서버로 전송하는 함수 
     const saveOrUpdateEmployee = (e) => {
         e.preventDefault();
 
@@ -36,13 +39,19 @@ const AddEmployeeComponent = () => {
         
     }
 
+    // 컴포넌트가 마운트(생성)될때 기본으로 작동되는 훅 
     useEffect(() => {
 
         EmployeeService.getEmployeeById(id).then((response) =>{
+            console.log("수정을 요청 했습니다.")
+            console.log(response)    
+            console.log(response.data)
+
             setFirstName(response.data.firstName)
             setLastName(response.data.lastName)
             setEmailId(response.data.emailId)
         }).catch(error => {
+            console.log(" 서버로 부터 오류가 발생 했습니다. ")
             console.log(error)
         })
     }, [])
